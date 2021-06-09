@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/radishmedia/react-native-push-notification#README.md",
   "keywords": [
     "react-component",
     "react-native",
@@ -17,15 +18,23 @@
     "firebase"
   ],
   "bugs": {
-    "url": "https://github.com/zo0r/react-native-push-notification/issues"
+    "url": "https://github.com/radishmedia/react-native-push-notification/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:zo0r/react-native-push-notification.git"
+    "url": "git+ssh://git@github.com:radishmedia/react-native-push-notification.git"
   },
   "peerDependencies": {
-    "@react-native-community/push-notification-ios": "^1.8.0",
     "react-native": ">=0.33"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "2.0.0",
+    "@typescript-eslint/eslint-plugin": "4.26.1",
+    "@typescript-eslint/parser": "4.26.1",
+    "eslint": "7.28.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "flow-bin": "0.137.0",
+    "invariant": "2.2.4"
   },
   "author": "zo0r <http://zo0r.me>",
   "license": "MIT"

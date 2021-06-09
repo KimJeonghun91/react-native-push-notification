@@ -26,10 +26,10 @@ const Notifications = {
   }
 };
 
-Notifications.callNative = function(name, params) {
-  if ( typeof this.handler[name] === 'function' ) {
-    if ( typeof params !== 'array' &&
-       typeof params !== 'object' ) {
+Notifications.callNative = function (name, params) {
+  if (typeof this.handler[name] === 'function') {
+    if (typeof params !== 'array' &&
+      typeof params !== 'object') {
       params = [];
     }
 
@@ -49,64 +49,64 @@ Notifications.callNative = function(name, params) {
  * @param {Object}    options.permissions - Permissions list
  * @param {Boolean}   options.requestPermissions - Check permissions when register
  */
-Notifications.configure = function(options) {
-  if ( typeof options.onRegister !== 'undefined' ) {
+Notifications.configure = function (options) {
+  if (typeof options.onRegister !== 'undefined') {
     this.onRegister = options.onRegister;
   }
 
-  if ( typeof options.onRegistrationError !== 'undefined' ) {
+  if (typeof options.onRegistrationError !== 'undefined') {
     this.onRegistrationError = options.onRegistrationError;
   }
 
-  if ( typeof options.onNotification !== 'undefined' ) {
+  if (typeof options.onNotification !== 'undefined') {
     this.onNotification = options.onNotification;
   }
 
-  if ( typeof options.onAction !== 'undefined' ) {
+  if (typeof options.onAction !== 'undefined') {
     this.onAction = options.onAction;
   }
 
-  if ( typeof options.permissions !== 'undefined' ) {
+  if (typeof options.permissions !== 'undefined') {
     this.permissions = options.permissions;
   }
 
-  if ( typeof options.onRemoteFetch !== 'undefined' ) {
+  if (typeof options.onRemoteFetch !== 'undefined') {
     this.onRemoteFetch = options.onRemoteFetch;
   }
 
-  if ( this.isLoaded === false ) {
+  if (this.isLoaded === false) {
     this._onRegister = this._onRegister.bind(this);
     this._onRegistrationError = this._onRegistrationError.bind(this);
     this._onNotification = this._onNotification.bind(this);
     this._onRemoteFetch = this._onRemoteFetch.bind(this);
     this._onAction = this._onAction.bind(this);
-    this.callNative( 'addEventListener', [ 'register', this._onRegister ] );
-    this.callNative( 'addEventListener', [ 'registrationError', this._onRegistrationError ] );
-    this.callNative( 'addEventListener', [ 'notification', this._onNotification ] );
-    this.callNative( 'addEventListener', [ 'localNotification', this._onNotification ] );
-    Platform.OS === 'android' ? this.callNative( 'addEventListener', [ 'action', this._onAction ] ) : null
-    Platform.OS === 'android' ? this.callNative( 'addEventListener', [ 'remoteFetch', this._onRemoteFetch ] ) : null
+    this.callNative('addEventListener', ['register', this._onRegister]);
+    this.callNative('addEventListener', ['registrationError', this._onRegistrationError]);
+    this.callNative('addEventListener', ['notification', this._onNotification]);
+    this.callNative('addEventListener', ['localNotification', this._onNotification]);
+    Platform.OS === 'android' ? this.callNative('addEventListener', ['action', this._onAction]) : null
+    Platform.OS === 'android' ? this.callNative('addEventListener', ['remoteFetch', this._onRemoteFetch]) : null
 
     this.isLoaded = true;
   }
 
   const handlePopInitialNotification = (state) => {
-    if('active' !== state) {
+    if ('active' !== state) {
       return;
     }
 
     if (options.popInitialNotification === undefined || options.popInitialNotification === true) {
-      this.popInitialNotification(function(firstNotification) {
-        if(this.isPopInitialNotification) {
+      this.popInitialNotification(function (firstNotification) {
+        if (this.isPopInitialNotification) {
           return;
         }
-        
+
         this.isPopInitialNotification = true;
-        
+
         if (!firstNotification || false === firstNotification.userInteraction) {
           return;
         }
-        
+
         this._onNotification(firstNotification, true);
       }.bind(this));
     }
@@ -116,19 +116,19 @@ Notifications.configure = function(options) {
 
   handlePopInitialNotification(AppState.currentState);
 
-  if ( options.requestPermissions !== false ) {
+  if (options.requestPermissions !== false) {
     this._requestPermissions();
   }
 };
 
 /* Unregister */
-Notifications.unregister = function() {
-  this.callNative( 'removeEventListener', [ 'register', this._onRegister ] )
-  this.callNative( 'removeEventListener', [ 'registrationError', this._onRegistrationError ] )
-  this.callNative( 'removeEventListener', [ 'notification', this._onNotification ] )
-  this.callNative( 'removeEventListener', [ 'localNotification', this._onNotification ] )
-  Platform.OS === 'android' ? this.callNative( 'removeEventListener', [ 'action', this._onAction ] ) : null
-  Platform.OS === 'android' ? this.callNative( 'removeEventListener', [ 'remoteFetch', this._onRemoteFetch ] ) : null
+Notifications.unregister = function () {
+  this.callNative('removeEventListener', ['register', this._onRegister])
+  this.callNative('removeEventListener', ['registrationError', this._onRegistrationError])
+  this.callNative('removeEventListener', ['notification', this._onNotification])
+  this.callNative('removeEventListener', ['localNotification', this._onNotification])
+  Platform.OS === 'android' ? this.callNative('removeEventListener', ['action', this._onAction]) : null
+  Platform.OS === 'android' ? this.callNative('removeEventListener', ['remoteFetch', this._onRemoteFetch]) : null
   this.isLoaded = false;
 };
 
@@ -140,7 +140,7 @@ Notifications.unregister = function() {
  * @param {String}    details.ticker -  ANDROID ONLY: The ticker displayed in the status bar.
  * @param {Object}    details.userInfo -  iOS ONLY: The userInfo used in the notification alert.
  */
-Notifications.localNotification = function({...details}) {
+Notifications.localNotification = function ({ ...details }) {
   if ('android' === Platform.OS && details && !details.channelId) {
     console.warn('No channel id passed, notifications may not work.');
   }
@@ -158,7 +158,7 @@ Notifications.localNotification = function({...details}) {
   if (details.userInfo) {
     details.userInfo.id = details.userInfo.id || details.id;
   } else {
-    details.userInfo = {id: details.id};
+    details.userInfo = { id: details.id };
   }
 
   if (Platform.OS === 'ios') {
@@ -184,7 +184,7 @@ Notifications.localNotification = function({...details}) {
     });
   } else {
     if (details && typeof details.number === 'number') {
-      if(isNaN(details.number)) {
+      if (isNaN(details.number)) {
         console.warn('NaN value has been passed as number');
         delete details.number;
       }
@@ -194,7 +194,7 @@ Notifications.localNotification = function({...details}) {
     }
 
     if (details && typeof details.shortcutId === 'number') {
-      if(isNaN(details.shortcutId)) {
+      if (isNaN(details.shortcutId)) {
         console.warn('NaN value has been passed as shortcutId');
         delete details.shortcutId;
       }
@@ -203,14 +203,14 @@ Notifications.localNotification = function({...details}) {
       }
     }
 
-    if(details && Array.isArray(details.actions)) {
+    if (details && Array.isArray(details.actions)) {
       details.actions = JSON.stringify(details.actions);
     }
 
-    if(details.userInfo) {
+    if (details.userInfo) {
       details.userInfo = JSON.stringify(details.userInfo);
     }
-  
+
     this.handler.presentLocalNotification(details);
   }
 };
@@ -220,13 +220,13 @@ Notifications.localNotification = function({...details}) {
  * @param {Object}    details (same as localNotification)
  * @param {Date}    details.date - The date and time when the system should deliver the notification
  */
-Notifications.localNotificationSchedule = function({...details}) {
+Notifications.localNotificationSchedule = function ({ ...details }) {
   if ('android' === Platform.os && details && !details.channelId) {
     console.warn('No channel id passed, notifications may not work.');
   }
-  
+
   if (details && typeof details.id === 'number') {
-    if(isNaN(details.id)) {
+    if (isNaN(details.id)) {
       console.warn('NaN value has been passed as id');
       delete details.id;
     }
@@ -238,7 +238,7 @@ Notifications.localNotificationSchedule = function({...details}) {
   if (details.userInfo) {
     details.userInfo.id = details.userInfo.id || details.id;
   } else {
-    details.userInfo = {id: details.id};
+    details.userInfo = { id: details.id };
   }
 
   if (Platform.OS === 'ios') {
@@ -285,12 +285,12 @@ Notifications.localNotificationSchedule = function({...details}) {
         details.shortcutId = '' + details.shortcutId;
       }
     }
-  
-    if(details && Array.isArray(details.actions)) {
+
+    if (details && Array.isArray(details.actions)) {
       details.actions = JSON.stringify(details.actions);
     }
 
-    if(details.userInfo) {
+    if (details.userInfo) {
       details.userInfo = JSON.stringify(details.userInfo);
     }
 
@@ -305,8 +305,8 @@ Notifications.localNotificationSchedule = function({...details}) {
 };
 
 /* Internal Functions */
-Notifications._onRegister = function(token) {
-  if ( this.onRegister !== false ) {
+Notifications._onRegister = function (token) {
+  if (this.onRegister !== false) {
     this.onRegister({
       token: token,
       os: Platform.OS
@@ -314,23 +314,23 @@ Notifications._onRegister = function(token) {
   }
 };
 
-Notifications._onRegistrationError = function(err) {
-  if ( this.onRegistrationError !== false ) {
+Notifications._onRegistrationError = function (err) {
+  if (this.onRegistrationError !== false) {
     this.onRegistrationError(err);
   }
 };
 
-Notifications._onRemoteFetch = function(notificationData) {
-  if ( this.onRemoteFetch !== false ) {
+Notifications._onRemoteFetch = function (notificationData) {
+  if (this.onRemoteFetch !== false) {
     this.onRemoteFetch(notificationData)
   }
 };
 
-Notifications._onAction = function({...notification}) {
-  if ( typeof notification.data === 'string' ) {
+Notifications._onAction = function ({ ...notification }) {
+  if (typeof notification.data === 'string') {
     try {
       notification.data = JSON.parse(notificationData.data);
-    } catch(e) {
+    } catch (e) {
       /* void */
     }
   }
@@ -338,12 +338,12 @@ Notifications._onAction = function({...notification}) {
   this.onAction(notification);
 }
 
-Notifications._transformNotificationObject = function(data, isFromBackground = null) {
-  if(!data) {
+Notifications._transformNotificationObject = function (data, isFromBackground = null) {
+  if (!data) {
     return;
   }
 
-  if ( isFromBackground === null ) {
+  if (isFromBackground === null) {
     isFromBackground = (
       data.foreground === false ||
       AppState.currentState === 'background' ||
@@ -353,7 +353,7 @@ Notifications._transformNotificationObject = function(data, isFromBackground = n
 
   let _notification;
 
-  if ( Platform.OS === 'ios' ) {
+  if (Platform.OS === 'ios') {
     const notifData = data.getData();
 
     _notification = {
@@ -371,29 +371,29 @@ Notifications._transformNotificationObject = function(data, isFromBackground = n
       finish: (res) => data.finish(res)
     };
 
-    if(isNaN(_notification.fireDate)) {
+    if (isNaN(_notification.fireDate)) {
       delete _notification.fireDate;
     }
 
   } else {
     _notification = {
       foreground: !isFromBackground,
-      finish: () => {},
+      finish: () => { },
       ...data,
     };
 
-    if ( typeof _notification.data === 'string' ) {
+    if (typeof _notification.data === 'string') {
       try {
         _notification.data = JSON.parse(_notification.data);
-      } catch(e) {
+      } catch (e) {
         /* void */
       }
     }
-    
-    if ( typeof _notification.userInfo === 'string' ) {
+
+    if (typeof _notification.userInfo === 'string') {
       try {
         _notification.userInfo = JSON.parse(_notification.userInfo);
-      } catch(e) {
+      } catch (e) {
         /* void */
       }
     }
@@ -411,11 +411,11 @@ Notifications._transformNotificationObject = function(data, isFromBackground = n
   return _notification;
 }
 
-Notifications._onNotification = function(data, initialNotification = false) {
-  if ( this.onNotification !== false ) {
+Notifications._onNotification = function (data, initialNotification = false) {
+  if (this.onNotification !== false) {
     let notification = data;
 
-    if(!initialNotification) {
+    if (!initialNotification) {
       notification = this._transformNotificationObject(data);
     }
 
@@ -424,35 +424,35 @@ Notifications._onNotification = function(data, initialNotification = false) {
 };
 
 /* onResultPermissionResult */
-Notifications._onPermissionResult = function() {
+Notifications._onPermissionResult = function () {
   this.isPermissionsRequestPending = false;
 };
 
 // Prevent requestPermissions called twice if ios result is pending
-Notifications._requestPermissions = function() {
-  if ( Platform.OS === 'ios' ) {
-    if ( this.isPermissionsRequestPending === false ) {
+Notifications._requestPermissions = function () {
+  if (Platform.OS === 'ios') {
+    if (this.isPermissionsRequestPending === false) {
       this.isPermissionsRequestPending = true;
-      return this.callNative( 'requestPermissions', [ this.permissions ])
-              .then(this._onPermissionResult.bind(this))
-              .catch(this._onPermissionResult.bind(this));
+      return this.callNative('requestPermissions', [this.permissions])
+        .then(this._onPermissionResult.bind(this))
+        .catch(this._onPermissionResult.bind(this));
     }
   } else if (Platform.OS === 'android') {
-    return this.callNative( 'requestPermissions', []);
+    return this.callNative('requestPermissions', []);
   }
 };
 
 // Stock requestPermissions function
-Notifications.requestPermissions = function() {
-  if ( Platform.OS === 'ios' ) {
-    return this.callNative( 'requestPermissions', [ this.permissions ]);
+Notifications.requestPermissions = function () {
+  if (Platform.OS === 'ios') {
+    return this.callNative('requestPermissions', [this.permissions]);
   } else if (Platform.OS === 'android') {
-    return this.callNative( 'requestPermissions', []);
+    return this.callNative('requestPermissions', []);
   }
 };
 
 /* Fallback functions */
-Notifications.subscribeToTopic = function() {
+Notifications.subscribeToTopic = function () {
   return this.callNative('subscribeToTopic', arguments);
 };
 
@@ -460,43 +460,43 @@ Notifications.unsubscribeFromTopic = function () {
   return this.callNative('unsubscribeFromTopic', arguments);
 };
 
-Notifications.presentLocalNotification = function() {
+Notifications.presentLocalNotification = function () {
   return this.callNative('presentLocalNotification', arguments);
 };
 
-Notifications.scheduleLocalNotification = function() {
+Notifications.scheduleLocalNotification = function () {
   return this.callNative('scheduleLocalNotification', arguments);
 };
 
-Notifications.cancelLocalNotifications = function(userInfo) {
-  if ( Platform.OS === 'ios' ) {
+Notifications.cancelLocalNotifications = function (userInfo) {
+  if (Platform.OS === 'ios') {
     return this.callNative('removePendingNotificationRequests', [[userInfo.id]]);
   } else {
     return this.callNative('cancelLocalNotifications', [userInfo]);
   }
 };
 
-Notifications.clearLocalNotification = function() {
-    return this.callNative('clearLocalNotification', arguments);
+Notifications.clearLocalNotification = function () {
+  return this.callNative('clearLocalNotification', arguments);
 };
 
-Notifications.cancelAllLocalNotifications = function() {
-  if ( Platform.OS === 'ios' ) {
+Notifications.cancelAllLocalNotifications = function () {
+  if (Platform.OS === 'ios') {
     return this.callNative('removeAllPendingNotificationRequests', arguments);
   } else if (Platform.OS === 'android') {
     return this.callNative('cancelAllLocalNotifications', arguments);
   }
 };
 
-Notifications.setApplicationIconBadgeNumber = function() {
+Notifications.setApplicationIconBadgeNumber = function () {
   return this.callNative('setApplicationIconBadgeNumber', arguments);
 };
 
-Notifications.getApplicationIconBadgeNumber = function() {
+Notifications.getApplicationIconBadgeNumber = function () {
   return this.callNative('getApplicationIconBadgeNumber', arguments);
 };
 
-Notifications.popInitialNotification = function(handler) {
+Notifications.popInitialNotification = function (handler) {
   this.callNative('getInitialNotification').then((result) => {
     handler(
       this._transformNotificationObject(result, true)
@@ -504,103 +504,103 @@ Notifications.popInitialNotification = function(handler) {
   });
 };
 
-Notifications.checkPermissions = function() {
+Notifications.checkPermissions = function () {
   return this.callNative('checkPermissions', arguments);
 };
 
 /* Abandon Permissions */
-Notifications.abandonPermissions = function() {
+Notifications.abandonPermissions = function () {
   return this.callNative('abandonPermissions', arguments);
 }
 
-Notifications.clearAllNotifications = function() {
+Notifications.clearAllNotifications = function () {
   // Only available for Android
   return this.callNative('clearAllNotifications', arguments)
 }
 
-Notifications.removeAllDeliveredNotifications = function() {
+Notifications.removeAllDeliveredNotifications = function () {
   return this.callNative('removeAllDeliveredNotifications', arguments);
 }
 
-Notifications.getDeliveredNotifications = function() {
+Notifications.getDeliveredNotifications = function () {
   return this.callNative('getDeliveredNotifications', arguments);
 }
 
-Notifications.getScheduledLocalNotifications = function(callback) {
-	const mapNotifications = (notifications) => {
-		let mappedNotifications = [];
-		if(notifications?.length > 0) {
-			if(Platform.OS === 'ios'){
-				mappedNotifications = notifications.map(notif => {
-					return ({
-						soundName: notif?.sound,
-						id: notif.id,
-                        date: (notif.date ? new Date(notif.date) : null),
-						number: notif?.badge,
-						message: notif?.body,
+Notifications.getScheduledLocalNotifications = function (callback) {
+  const mapNotifications = (notifications) => {
+    let mappedNotifications = [];
+    if (notifications?.length > 0) {
+      if (Platform.OS === 'ios') {
+        mappedNotifications = notifications.map(notif => {
+          return ({
+            soundName: notif?.sound,
+            id: notif.id,
+            date: (notif.date ? new Date(notif.date) : null),
+            number: notif?.badge,
+            message: notif?.body,
             title: notif?.title,
             data: notif?.userInfo
-					})
-				})
-			} else if(Platform.OS === 'android') {
-				mappedNotifications = notifications.map(notif => {
+          })
+        })
+      } else if (Platform.OS === 'android') {
+        mappedNotifications = notifications.map(notif => {
 
           try {
             notif.data = JSON.parse(notif.data);
-          } catch(e) { }
+          } catch (e) { }
 
-					return ({
-						soundName: notif.soundName,
-						repeatInterval: notif.repeatInterval,
-						id: notif.id,
-						date: new Date(notif.date),
-						number: notif.number,
-						message: notif.message,
-						title: notif.title,
-						data: notif.data,
-					})
-				})
-			}
-		}
-		callback(mappedNotifications);
-	}
+          return ({
+            soundName: notif.soundName,
+            repeatInterval: notif.repeatInterval,
+            id: notif.id,
+            date: new Date(notif.date),
+            number: notif.number,
+            message: notif.message,
+            title: notif.title,
+            data: notif.data,
+          })
+        })
+      }
+    }
+    callback(mappedNotifications);
+  }
 
-  if(Platform.OS === 'ios'){
+  if (Platform.OS === 'ios') {
     return this.callNative('getPendingNotificationRequests', [mapNotifications]);
   } else {
     return this.callNative('getScheduledLocalNotifications', [mapNotifications]);
   }
 }
 
-Notifications.removeDeliveredNotifications = function() {
+Notifications.removeDeliveredNotifications = function () {
   return this.callNative('removeDeliveredNotifications', arguments);
 }
 
-Notifications.invokeApp = function() {
+Notifications.invokeApp = function () {
   return this.callNative('invokeApp', arguments);
 };
 
-Notifications.getChannels = function() {
+Notifications.getChannels = function () {
   return this.callNative('getChannels', arguments);
 };
 
-Notifications.channelExists = function() {
+Notifications.channelExists = function () {
   return this.callNative('channelExists', arguments);
 };
 
-Notifications.createChannel = function() {
+Notifications.createChannel = function () {
   return this.callNative('createChannel', arguments);
 };
 
-Notifications.channelBlocked = function() {
+Notifications.channelBlocked = function () {
   return this.callNative('channelBlocked', arguments);
 };
 
-Notifications.deleteChannel = function() {
+Notifications.deleteChannel = function () {
   return this.callNative('deleteChannel', arguments);
 };
 
-Notifications.setNotificationCategories = function() {
+Notifications.setNotificationCategories = function () {
   return this.callNative('setNotificationCategories', arguments);
 }
 

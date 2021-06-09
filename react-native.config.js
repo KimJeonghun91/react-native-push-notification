@@ -3,7 +3,7 @@ module.exports = {
         platforms: {
             android: {
                 "packageInstance": "new ReactNativePushNotificationPackage()"
-            } 
+            }
         }
     }
 };
