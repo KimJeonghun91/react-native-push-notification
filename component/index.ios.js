@@ -50,22 +50,8 @@ class NotificationsComponent {
   _threadID; // string;
   _fireDate; // string | Date;
 
-  static FetchResult = {
-    NewData: 'UIBackgroundFetchResultNewData',
-    NoData: 'UIBackgroundFetchResultNoData',
-    ResultFailed: 'UIBackgroundFetchResultFailed',
-  };
-
-  static AuthorizationStatus = {
-    UNAuthorizationStatusNotDetermined: 0,
-    UNAuthorizationStatusDenied: 1,
-    UNAuthorizationStatusAuthorized: 2,
-    UNAuthorizationStatusProvisional: 3,
-  };
-
   /**
    * Schedules the localNotification for immediate presentation.
-   * @deprecated use `addNotificationRequest` instead
    */
   static presentLocalNotification(details) {
     RNPushNotification.presentLocalNotification(details);
@@ -73,23 +59,9 @@ class NotificationsComponent {
 
   /**
    * Schedules the localNotification for future presentation.
-   * @deprecated use `addNotificationRequest` instead
    */
   static scheduleLocalNotification(details) {
     RNPushNotification.scheduleLocalNotification(details);
-  }
-
-  /**
-   * Sends notificationRequest to notification center at specified firedate.
-   * Fires immediately if firedate is not set.
-   */
-  static addNotificationRequest(request) {
-    const handledRequest =
-      request.fireDate instanceof Date
-        ? { ...request, fireDate: request.fireDate.toISOString() }
-        : request;
-
-    RNPushNotification.addNotificationRequest(handledRequest);
   }
 
   /**
@@ -101,26 +73,17 @@ class NotificationsComponent {
   }
 
   /**
-   * Cancels all scheduled localNotifications.
-   * @deprecated use `removeAllPendingNotificationRequests` instead
-   * - This method is deprecated in iOS 10 and will be removed from future release
+   * Cancel all pending notifications
    */
   static cancelAllLocalNotifications() {
     RNPushNotification.cancelAllLocalNotifications();
   }
 
   /**
-   * Removes all pending notifications
+   * Cancel local notifications.
    */
-  static removeAllPendingNotificationRequests() {
-    RNPushNotification.removeAllPendingNotificationRequests();
-  }
-
-  /**
-   * Removes pending notifications with given identifier strings.
-   */
-  static removePendingNotificationRequests(identifiers) {
-    RNPushNotification.removePendingNotificationRequests(identifiers);
+  static cancelLocalNotifications(identifiers /* string[] */) {
+    RNPushNotification.cancelAllLocalNotifications(identifiers);
   }
 
   /**
@@ -169,15 +132,6 @@ class NotificationsComponent {
   }
 
   /**
-   * Cancel local notifications.
-   * @deprecated - use `removePendingNotifications`
-   * See https://reactnative.dev/docs/pushnotificationios.html#cancellocalnotification
-   */
-  static cancelLocalNotifications(userInfo /* Object */) {
-    RNPushNotification.cancelLocalNotifications(userInfo);
-  }
-
-  /**
    * Gets the local notifications that are currently scheduled.
    * @deprecated - use `getPendingNotificationRequests`
    */
@@ -206,7 +160,7 @@ class NotificationsComponent {
       type === 'register' ||
       type === 'registrationError' ||
       type === 'localNotification',
-      'PushNotificationIOS only supports `notification`, `register`, `registrationError`, and `localNotification` events',
+      'NotificationsComponent only supports `notification`, `register`, `registrationError`, and `localNotification` events',
     );
     let listener;
 
@@ -214,14 +168,14 @@ class NotificationsComponent {
       listener = PushNotificationEmitter.addListener(
         DEVICE_NOTIF_EVENT,
         (notifData) => {
-          handler(new PushNotificationIOS(notifData));
+          handler(new NotificationsComponent(notifData));
         },
       );
     } else if (type === 'localNotification') {
       listener = PushNotificationEmitter.addListener(
         DEVICE_LOCAL_NOTIF_EVENT,
         (notifData) => {
-          handler(new PushNotificationIOS(notifData));
+          handler(new NotificationsComponent(notifData));
         },
       );
     } else if (type === 'register') {
@@ -255,7 +209,7 @@ class NotificationsComponent {
       type === 'register' ||
       type === 'registrationError' ||
       type === 'localNotification',
-      'PushNotificationIOS only supports `notification`, `register`, `registrationError`, and `localNotification` events',
+      'NotificationsComponent only supports `notification`, `register`, `registrationError`, and `localNotification` events',
     );
     const listener = _notifHandlers.get(type);
     if (!listener) {
@@ -318,13 +272,13 @@ class NotificationsComponent {
   static getInitialNotification() {
     return RNPushNotification.getInitialNotification().then(
       (notification) => {
-        return notification && new PushNotificationIOS(notification);
+        return notification && new NotificationsComponent(notification);
       },
     );
   }
 
   /**
-   * You will never need to instantiate `PushNotificationIOS` yourself.
+   * You will never need to instantiate `NotificationsComponent` yourself.
    * Listening to the `notification` event and invoking
    * `getInitialNotification` is sufficient
    *
@@ -392,10 +346,7 @@ class NotificationsComponent {
     }
     this._remoteNotificationCompleteCallbackCalled = true;
 
-    RNPushNotification.onFinishRemoteNotification(
-      this._notificationId,
-      fetchResult,
-    );
+    RNPushNotification.onFinishRemoteNotification(this._notificationId, fetchResult);
   }
 
   /**

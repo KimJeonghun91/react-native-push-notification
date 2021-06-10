@@ -26,17 +26,17 @@ declare module "react-native-push-notification" {
   };
 
   /**
-   * An event emitted by PushNotificationIOS.
+   * An event emitted by PushNotification.
    */
   export type PushNotificationEventName = {
     /**
      * Fired when a remote notification is received. The handler will be invoked
-     * with an instance of `PushNotificationIOS`.
+     * with an instance of `PushNotification`.
      */
     notification: string,
     /**
      * Fired when a local notification is received. The handler will be invoked
-     * with an instance of `PushNotificationIOS`.
+     * with an instance of `PushNotification`.
      */
     localNotification: string,
     /**
@@ -289,36 +289,34 @@ declare module "react-native-push-notification" {
     playSound?: boolean;
   }
 
-  export interface PushNotification {
-    configure(options: PushNotificationOptions): void;
-    unregister(): void;
-    localNotification(notification: PushNotificationObject): void;
-    localNotificationSchedule(notification: PushNotificationScheduleObject): void;
-    requestPermissions(permissions?: Array<"alert" | "badge" | "sound">): Promise<PushNotificationPermissions>;
-    subscribeToTopic(topic: string): void;
-    unsubscribeFromTopic(topic: string): void;
-    presentLocalNotification(notification: PushNotificationObject): void;
-    scheduleLocalNotification(notification: PushNotificationScheduleObject): void;
-    cancelLocalNotifications(details: { id: string }): void;
-    clearLocalNotification(tag: string, notificationID: number): void;
-    cancelAllLocalNotifications(): void;
-    setApplicationIconBadgeNumber(badgeCount: number): void;
-    getApplicationIconBadgeNumber(callback: (badgeCount: number) => void): void;
-    popInitialNotification(callback: (notification: ReceivedNotification | null) => void): void;
-    abandonPermissions(): void;
-    checkPermissions(callback: (permissions: PushNotificationPermissions) => void): void;
-    clearAllNotifications(): void;
-    removeAllDeliveredNotifications(): void;
-    getDeliveredNotifications(callback: (notifications: PushNotificationDeliveredObject[]) => void): void;
-    getScheduledLocalNotifications(callback: (notifications: PushNotificationScheduledLocalObject[]) => void): void;
-    removeDeliveredNotifications(identifiers: string[]): void;
-    invokeApp(notification: PushNotificationObject): void;
-    getChannels(callback: (channel_ids: string[]) => void): void;
-    channelExists(channel_id: string, callback: (exists: boolean) => void): void;
-    createChannel(channel: ChannelObject, callback: (created: boolean) => void): void;
-    channelBlocked(channel_id: string, callback: (blocked: boolean) => void): void;
-    deleteChannel(channel_id: string): void;
+  export default class PushNotification {
+    static configure(options: PushNotificationOptions): void;
+    static unregister(): void;
+    static localNotification(notification: PushNotificationObject): void;
+    static localNotificationSchedule(notification: PushNotificationScheduleObject): void;
+    static requestPermissions(permissions?: Array<"alert" | "badge" | "sound">): Promise<PushNotificationPermissions>;
+    static subscribeToTopic(topic: string): void;
+    static unsubscribeFromTopic(topic: string): void;
+    static presentLocalNotification(notification: PushNotificationObject): void;
+    static scheduleLocalNotification(notification: PushNotificationScheduleObject): void;
+    static cancelLocalNotifications(details: { id: string }): void;
+    static clearLocalNotification(tag: string, notificationID: number): void;
+    static cancelAllLocalNotifications(): void;
+    static setApplicationIconBadgeNumber(badgeCount: number): void;
+    static getApplicationIconBadgeNumber(callback: (badgeCount: number) => void): void;
+    static popInitialNotification(callback: (notification: ReceivedNotification | null) => void): void;
+    static abandonPermissions(): void;
+    static checkPermissions(callback: (permissions: PushNotificationPermissions) => void): void;
+    static clearAllNotifications(): void;
+    static removeAllDeliveredNotifications(): void;
+    static getDeliveredNotifications(callback: (notifications: PushNotificationDeliveredObject[]) => void): void;
+    static getScheduledLocalNotifications(callback: (notifications: PushNotificationScheduledLocalObject[]) => void): void;
+    static removeDeliveredNotifications(identifiers: string[]): void;
+    static invokeApp(notification: PushNotificationObject): void;
+    static getChannels(callback: (channel_ids: string[]) => void): void;
+    static channelExists(channel_id: string, callback: (exists: boolean) => void): void;
+    static createChannel(channel: ChannelObject, callback: (created: boolean) => void): void;
+    static channelBlocked(channel_id: string, callback: (blocked: boolean) => void): void;
+    static deleteChannel(channel_id: string): void;
   }
-
-  export default PushNotification;
 }

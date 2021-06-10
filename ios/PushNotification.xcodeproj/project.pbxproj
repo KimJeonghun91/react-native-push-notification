@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A157D012670B4FF00BF285A /* RCTConvert+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A157D002670B4FF00BF285A /* RCTConvert+Notification.m */; };
 		9BEF92C02212C2D10027AF0D /* RNPushNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B97F674220DED9C00B61540 /* RNPushNotification.m */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A157CFF2670B4FF00BF285A /* RCTConvert+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+Notification.h"; sourceTree = "<group>"; };
+		4A157D002670B4FF00BF285A /* RCTConvert+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+Notification.m"; sourceTree = "<group>"; };
 		9B97F666220DEAF700B61540 /* RNPushNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPushNotification.h; sourceTree = "<group>"; };
 		9B97F66B220DEC6000B61540 /* libRNPushNotification.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPushNotification.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B97F674220DED9C00B61540 /* RNPushNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPushNotification.m; sourceTree = "<group>"; };
@@ -49,6 +52,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4A157CFF2670B4FF00BF285A /* RCTConvert+Notification.h */,
+				4A157D002670B4FF00BF285A /* RCTConvert+Notification.m */,
 				9B97F674220DED9C00B61540 /* RNPushNotification.m */,
 				9B97F666220DEAF700B61540 /* RNPushNotification.h */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -102,11 +107,12 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PushNotificationIOS" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PushNotification" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -125,6 +131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A157D012670B4FF00BF285A /* RCTConvert+Notification.m in Sources */,
 				9BEF92C02212C2D10027AF0D /* RNPushNotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,7 +185,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -224,7 +231,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -280,7 +287,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PushNotificationIOS" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PushNotification" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

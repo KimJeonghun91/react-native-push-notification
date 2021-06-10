@@ -23,68 +23,6 @@ RCT_ENUM_CONVERTER(NSCalendarUnit,
 
 @end
 
-
-
-/**
- * Type deprecated in iOS 10.0
- * TODO: This method will be removed in the next major version
- */
-@implementation RCTConvert (UILocalNotification)
-
-+ (UILocalNotification *)UILocalNotification:(id)json
-{
-    NSDictionary<NSString *, id> *details = [self NSDictionary:json];
-    BOOL isSilent = [RCTConvert BOOL:details[@"isSilent"]];
-    UILocalNotification *notification = [UILocalNotification new];
-    notification.alertTitle = [RCTConvert NSString:details[@"alertTitle"]];
-    notification.fireDate = [RCTConvert NSDate:details[@"fireDate"]] ?: [NSDate date];
-    notification.alertBody = [RCTConvert NSString:details[@"alertBody"]];
-    notification.alertAction = [RCTConvert NSString:details[@"alertAction"]];
-    notification.userInfo = [RCTConvert NSDictionary:details[@"userInfo"]];
-    notification.category = [RCTConvert NSString:details[@"category"]];
-    notification.repeatInterval = [RCTConvert NSCalendarUnit:details[@"repeatInterval"]];
-    if (details[@"applicationIconBadgeNumber"]) {
-        notification.applicationIconBadgeNumber = [RCTConvert NSInteger:details[@"applicationIconBadgeNumber"]];
-    }
-    if (!isSilent) {
-        notification.soundName = [RCTConvert NSString:details[@"soundName"]] ?: UILocalNotificationDefaultSoundName;
-    }
-    return notification;
-}
-
-RCT_ENUM_CONVERTER(UIBackgroundFetchResult, (@{
-  @"UIBackgroundFetchResultNewData": @(UIBackgroundFetchResultNewData),
-  @"UIBackgroundFetchResultNoData": @(UIBackgroundFetchResultNoData),
-  @"UIBackgroundFetchResultFailed": @(UIBackgroundFetchResultFailed),
-}), UIBackgroundFetchResultNoData, integerValue)
-
-
-+ (NSDictionary *)RCTFormatLocalNotification:(UILocalNotification *)notification
-{
-    NSMutableDictionary *formattedLocalNotification = [NSMutableDictionary dictionary];
-  
-    if (notification.fireDate) {
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"];
-        NSString *fireDateString = [formatter stringFromDate:notification.fireDate];
-        formattedLocalNotification[@"fireDate"] = fireDateString;
-    }
-  
-    formattedLocalNotification[@"alertAction"] = RCTNullIfNil(notification.alertAction);
-    formattedLocalNotification[@"alertTitle"] = RCTNullIfNil(notification.alertTitle);
-    formattedLocalNotification[@"alertBody"] = RCTNullIfNil(notification.alertBody);
-    formattedLocalNotification[@"applicationIconBadgeNumber"] = @(notification.applicationIconBadgeNumber);
-    formattedLocalNotification[@"category"] = RCTNullIfNil(notification.category);
-    formattedLocalNotification[@"repeatInterval"] = @(notification.repeatInterval);
-    formattedLocalNotification[@"soundName"] = RCTNullIfNil(notification.soundName);
-    formattedLocalNotification[@"userInfo"] = RCTNullIfNil(RCTJSONClean(notification.userInfo));
-    formattedLocalNotification[@"remote"] = @NO;
-
-    return formattedLocalNotification;
-}
-
-@end
-
 /**
  * Convert json to UNNotificationRequest
  */

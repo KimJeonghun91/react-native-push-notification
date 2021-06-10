@@ -172,7 +172,7 @@ Notifications.localNotification = function ({ ...details }) {
 
     // for valid fields see: https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/PayloadKeyReference.html
 
-    this.handler.addNotificationRequest({
+    this.handler.presentLocalNotification({
       id: (!details.id ? Math.floor(Math.random() * Math.pow(2, 32)).toString() : details.id),
       title: details.title,
       body: details.message,
@@ -264,7 +264,7 @@ Notifications.localNotificationSchedule = function ({ ...details }) {
       iosDetails.badge = parseInt(details.number, 10);
     }
 
-    this.handler.addNotificationRequest(iosDetails);
+    this.handler.scheduleLocalNotification(iosDetails);
   } else {
     if (details && typeof details.number === 'number') {
       if (isNaN(details.number)) {
@@ -469,23 +469,11 @@ Notifications.scheduleLocalNotification = function () {
 };
 
 Notifications.cancelLocalNotifications = function (userInfo) {
-  if (Platform.OS === 'ios') {
-    return this.callNative('removePendingNotificationRequests', [[userInfo.id]]);
-  } else {
-    return this.callNative('cancelLocalNotifications', [userInfo]);
-  }
-};
-
-Notifications.clearLocalNotification = function () {
-  return this.callNative('clearLocalNotification', arguments);
+  return this.callNative('cancelLocalNotifications', Platform.OS === 'ios' ? [userInfo.id] : [userInfo]);
 };
 
 Notifications.cancelAllLocalNotifications = function () {
-  if (Platform.OS === 'ios') {
-    return this.callNative('removeAllPendingNotificationRequests', arguments);
-  } else if (Platform.OS === 'android') {
-    return this.callNative('cancelAllLocalNotifications', arguments);
-  }
+  return this.callNative('cancelAllLocalNotifications', arguments);
 };
 
 Notifications.setApplicationIconBadgeNumber = function () {
@@ -565,11 +553,7 @@ Notifications.getScheduledLocalNotifications = function (callback) {
     callback(mappedNotifications);
   }
 
-  if (Platform.OS === 'ios') {
-    return this.callNative('getPendingNotificationRequests', [mapNotifications]);
-  } else {
-    return this.callNative('getScheduledLocalNotifications', [mapNotifications]);
-  }
+  return this.callNative('getScheduledLocalNotifications', [mapNotifications]);
 }
 
 Notifications.removeDeliveredNotifications = function () {
@@ -612,6 +596,19 @@ Notifications.Importance = Object.freeze({
   MIN: 1,
   NONE: 0,
   UNSPECIFIED: -1000,
+});
+
+Notifications.FetchResult = Object.freeze({
+  NewData: 'UIBackgroundFetchResultNewData',
+  NoData: 'UIBackgroundFetchResultNoData',
+  ResultFailed: 'UIBackgroundFetchResultFailed',
+});
+
+Notifications.AuthorizationStatus = Object.freeze({
+  UNAuthorizationStatusNotDetermined: 0,
+  UNAuthorizationStatusDenied: 1,
+  UNAuthorizationStatusAuthorized: 2,
+  UNAuthorizationStatusProvisional: 3,
 });
 
 module.exports = Notifications;
