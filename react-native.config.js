@@ -1,9 +1,9 @@
 module.exports = {
-    dependency: {
-        platforms: {
-            android: {
-                "packageInstance": "new ReactNativePushNotificationPackage()"
-            } 
-        }
+  dependency: {
+    platforms: {
+      android: {
+        "packageInstance": "new ReactNativePushNotificationPackage()"
+      }
     }
+  }
 };
