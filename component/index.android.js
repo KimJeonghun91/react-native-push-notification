@@ -166,6 +166,13 @@ class NotificationsComponent {
   static deleteChannel(channel_id) {
     RNPushNotification.deleteChannel(channel_id);
   }
+
+  /**
+   * Open App Settings
+   */
+  static openAppSettings() {
+    RNPushNotification.openAppSettings();
+  }
 }
 
 module.exports = {

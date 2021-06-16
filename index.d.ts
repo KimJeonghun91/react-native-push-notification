@@ -318,5 +318,6 @@ declare module "react-native-push-notification" {
     static createChannel(channel: ChannelObject, callback: (created: boolean) => void): void;
     static channelBlocked(channel_id: string, callback: (blocked: boolean) => void): void;
     static deleteChannel(channel_id: string): void;
+    static openAppSettings(): void;
   }
 }

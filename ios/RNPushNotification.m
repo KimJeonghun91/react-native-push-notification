@@ -368,6 +368,11 @@ RCT_EXPORT_METHOD(getDeliveredNotifications:(RCTResponseSenderBlock)callback)
   }
 }
 
+RCT_EXPORT_METHOD(openAppSettings)
+{
+  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+}
+
 #else //TARGET_OS_TV
 
 RCT_EXPORT_METHOD(onFinishRemoteNotification:(NSString *)notificationId fetchResult:(NSString *)fetchResult)
