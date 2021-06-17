@@ -200,6 +200,11 @@ RCT_EXPORT_METHOD(requestPermissions:(NSDictionary *)permissions
     if ([RCTConvert BOOL:permissions[@"sound"]]) {
       types |= UNAuthorizationOptionSound;
     }
+    if (@available(iOS 12.0, *)) {
+      if ([RCTConvert BOOL:permissions[@"providesAppNotificationSettings"]]) {
+        types |= UNAuthorizationOptionProvidesAppNotificationSettings;
+      }
+    }
   } else {
     types = UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound;
   }
@@ -229,7 +234,7 @@ RCT_EXPORT_METHOD(abandonPermissions)
 RCT_EXPORT_METHOD(checkPermissions:(RCTResponseSenderBlock)callback)
 {
   if (RCTRunningInAppExtension()) {
-    callback(@[RCTSettingsDictForUNNotificationSettings(NO, NO, NO, NO, NO, UNAuthorizationStatusNotDetermined)]);
+    callback(@[RCTSettingsDictForUNNotificationSettings(NO, NO, NO, NO, NO, NO, UNAuthorizationStatusNotDetermined)]);
     return;
   }
   
@@ -239,16 +244,22 @@ RCT_EXPORT_METHOD(checkPermissions:(RCTResponseSenderBlock)callback)
 }
 
 static inline NSDictionary *RCTPromiseResolveValueForUNNotificationSettings(UNNotificationSettings* _Nonnull settings) {
-  return RCTSettingsDictForUNNotificationSettings(settings.alertSetting == UNNotificationSettingEnabled,
-                                                  settings.badgeSetting == UNNotificationSettingEnabled,
-                                                  settings.soundSetting == UNNotificationSettingEnabled,
-                                                  settings.lockScreenSetting == UNNotificationSettingEnabled,
-                                                  settings.notificationCenterSetting == UNNotificationSettingEnabled,
-                                                  settings.authorizationStatus);
+    BOOL providesAppNotificationSettings = false;
+    if (@available(iOS 12.0, *)) {
+        providesAppNotificationSettings = settings.providesAppNotificationSettings;
+    }
+    
+    return RCTSettingsDictForUNNotificationSettings(settings.alertSetting == UNNotificationSettingEnabled,
+                                                    settings.badgeSetting == UNNotificationSettingEnabled,
+                                                    settings.soundSetting == UNNotificationSettingEnabled,
+                                                    providesAppNotificationSettings,
+                                                    settings.lockScreenSetting == UNNotificationSettingEnabled,
+                                                    settings.notificationCenterSetting == UNNotificationSettingEnabled,
+                                                    settings.authorizationStatus);
 }
 
-static inline NSDictionary *RCTSettingsDictForUNNotificationSettings(BOOL alert, BOOL badge, BOOL sound, BOOL lockScreen, BOOL notificationCenter, UNAuthorizationStatus authorizationStatus) {
-  return @{@"alert": @(alert), @"badge": @(badge), @"sound": @(sound), @"lockScreen": @(lockScreen), @"notificationCenter": @(notificationCenter), @"authorizationStatus": @(authorizationStatus)};
+static inline NSDictionary *RCTSettingsDictForUNNotificationSettings(BOOL alert, BOOL badge, BOOL sound, BOOL providesAppNotificationSettings, BOOL lockScreen, BOOL notificationCenter, UNAuthorizationStatus authorizationStatus) {
+  return @{@"alert": @(alert), @"badge": @(badge), @"sound": @(sound), @"providesAppNotificationSettings": @(providesAppNotificationSettings), @"lockScreen": @(lockScreen), @"notificationCenter": @(notificationCenter), @"authorizationStatus": @(authorizationStatus)};
 }
 
 RCT_EXPORT_METHOD(presentLocalNotification:(UNNotificationRequest*)request)
@@ -370,7 +381,7 @@ RCT_EXPORT_METHOD(getDeliveredNotifications:(RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(openAppSettings)
 {
-  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
 }
 
 #else //TARGET_OS_TV
