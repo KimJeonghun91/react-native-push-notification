@@ -278,6 +278,13 @@ class NotificationsComponent {
   }
 
   /**
+   * Open App Settings
+   */
+  static openAppSettings() {
+    RNPushNotification.openAppSettings();
+  }
+
+  /**
    * You will never need to instantiate `NotificationsComponent` yourself.
    * Listening to the `notification` event and invoking
    * `getInitialNotification` is sufficient

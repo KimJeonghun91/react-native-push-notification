@@ -588,6 +588,10 @@ Notifications.setNotificationCategories = function () {
   return this.callNative('setNotificationCategories', arguments);
 }
 
+Notifications.openAppSettings = function() {
+  return this.callNative('openAppSettings', arguments);
+}
+
 // https://developer.android.com/reference/android/app/NotificationManager#IMPORTANCE_DEFAULT
 Notifications.Importance = Object.freeze({
   DEFAULT: 3,
