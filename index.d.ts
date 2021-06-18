@@ -187,9 +187,19 @@ declare module "react-native-push-notification" {
      * iOS-only
      */
     providesAppNotificationSettings?: boolean;
-
+    /**
+     * The setting that indicates whether your app’s notifications appear on a device’s Lock screen.
+     * iOS-only
+     */
     lockScreen?: boolean;
+    /**
+     * The setting that indicates whether your app’s notifications appear in Notification Center.
+     * iOS-only
+     */
     notificationCenter?: boolean;
+    /**
+     * iOS-only
+     */
     authorizationStatus?: AuthorizationStatus[keyof AuthorizationStatus];
   }
 
