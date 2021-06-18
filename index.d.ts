@@ -170,9 +170,23 @@ declare module "react-native-push-notification" {
 
 
   export interface PushNotificationPermissions {
+    /**
+     * The ability to display alerts.
+     */
     alert?: boolean;
+    /**
+     * The ability to update the app’s badge.
+     */
     badge?: boolean;
+    /**
+     * The ability to play sounds.
+     */
     sound?: boolean;
+    /**
+     * An option indicating the system should display a button for in-app notification settings.
+     * iOS-only
+     */
+    providesAppNotificationSettings?: boolean;
   }
 
   export interface ReceivedNotification {

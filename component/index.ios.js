@@ -228,19 +228,7 @@ class NotificationsComponent {
    * See https://reactnative.dev/docs/pushnotificationios.html#requestpermissions
    */
   static requestPermissions(permissions) {
-    let requestedPermissions = {
-      alert: true,
-      badge: true,
-      sound: true,
-    };
-    if (permissions) {
-      requestedPermissions = {
-        alert: !!permissions.alert,
-        badge: !!permissions.badge,
-        sound: !!permissions.sound,
-      };
-    }
-    return RNPushNotification.requestPermissions(requestedPermissions);
+    return RNPushNotification.requestPermissions(permissions);
   }
 
   /**
