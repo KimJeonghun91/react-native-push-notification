@@ -187,6 +187,10 @@ declare module "react-native-push-notification" {
      * iOS-only
      */
     providesAppNotificationSettings?: boolean;
+
+    lockScreen?: boolean;
+    notificationCenter?: boolean;
+    authorizationStatus?: AuthorizationStatus[keyof AuthorizationStatus];
   }
 
   export interface ReceivedNotification {
