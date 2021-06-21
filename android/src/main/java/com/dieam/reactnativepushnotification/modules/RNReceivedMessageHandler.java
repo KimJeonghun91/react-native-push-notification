@@ -55,12 +55,17 @@ public class RNReceivedMessageHandler {
             bundle.putString("sound", remoteNotification.getSound());
             bundle.putString("color", remoteNotification.getColor());
             bundle.putString("tag", remoteNotification.getTag());
-            
-            if(remoteNotification.getChannelId() != null) {
-              bundle.putString("channelId", remoteNotification.getChannelId());
+
+            if(remoteNotification.getIcon() != null) {
+                bundle.putString("smallIcon", remoteNotification.getIcon());
+            } else {
+               bundle.putString("smallIcon", "ic_notification");
             }
-            else {
-              bundle.putString("channelId", config.getNotificationDefaultChannelId());
+
+            if(remoteNotification.getChannelId() != null) {
+                bundle.putString("channelId", remoteNotification.getChannelId());
+            } else {
+                bundle.putString("channelId", config.getNotificationDefaultChannelId());
             }
 
             Integer visibilty = remoteNotification.getVisibility();
