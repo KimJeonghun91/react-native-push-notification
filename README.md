@@ -362,6 +362,9 @@ PushNotification.localNotificationSchedule({
   message: "My Notification Message", // (required)
   date: new Date(Date.now() + 60 * 1000), // in 60 secs
   allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+
+  /* Android Only Properties */
+  repeatTime: 1, // (optional) Increment of configured repeateType. Check 'Repeating Notifications' section for more info.
 });
 ```
 
