@@ -83,7 +83,7 @@ class NotificationsComponent {
    * Cancel local notifications.
    */
   static cancelLocalNotifications(identifiers /* string[] */) {
-    RNPushNotification.cancelAllLocalNotifications(identifiers);
+    RNPushNotification.cancelLocalNotifications(identifiers);
   }
 
   /**

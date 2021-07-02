@@ -475,7 +475,7 @@ Notifications.scheduleLocalNotification = function () {
 };
 
 Notifications.cancelLocalNotifications = function (userInfo) {
-  return this.callNative('cancelLocalNotifications', Platform.OS === 'ios' ? [userInfo.id] : [userInfo]);
+  return this.callNative('cancelLocalNotifications', Platform.OS === 'ios' ? [[userInfo.id]] : [userInfo]);
 };
 
 Notifications.cancelAllLocalNotifications = function () {
