@@ -62,7 +62,8 @@ class NotificationsComponent {
   static checkPermissions(callback) {
     RNPushNotification.checkPermissions().then(alert => callback({ alert }));
   }
-  addEventListener(type, handler) {
+
+  static addEventListener(type, handler) {
     let listener;
     if (type === 'notification') {
       listener = DeviceEventEmitter.addListener(
