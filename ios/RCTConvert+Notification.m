@@ -56,12 +56,10 @@ RCT_ENUM_CONVERTER(NSCalendarUnit,
     NSDate* fireDate = [RCTConvert NSDate:details[@"fireDate"]];
     BOOL repeats = [RCTConvert BOOL:details[@"repeats"]];
     NSDateComponents *triggerDate = fireDate ? [[NSCalendar currentCalendar]
-                                                components:NSCalendarUnitYear +
-                                                NSCalendarUnitMonth + NSCalendarUnitDay +
-                                                NSCalendarUnitHour + NSCalendarUnitMinute +
-                                                NSCalendarUnitSecond + NSCalendarUnitTimeZone
-                                                fromDate:fireDate] : nil;
-    
+                                                components:NSCalendarUnitHour +
+                                                NSCalendarUnitMinute + NSCalendarUnitSecond +
+                                                NSCalendarUnitTimeZone fromDate:fireDate] : nil;
+
     UNCalendarNotificationTrigger* trigger = triggerDate ? [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:triggerDate repeats:repeats] : nil;
 
     UNNotificationRequest* notification = [UNNotificationRequest requestWithIdentifier:identifier content:content trigger:trigger];
