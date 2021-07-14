@@ -22,7 +22,7 @@ class NotificationsComponent {
   }
 
   static requestPermissions() {
-    RNPushNotification.requestPermissions();
+    return RNPushNotification.requestPermissions();
   }
 
   static subscribeToTopic(topic) {

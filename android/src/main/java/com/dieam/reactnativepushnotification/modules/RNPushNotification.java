@@ -27,6 +27,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -131,7 +132,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
     }
 
     @ReactMethod
-    public void requestPermissions() {
+    public void requestPermissions(Promise promise) {
         final RNPushNotificationJsDelivery fMjsDelivery = mJsDelivery;
 
         FirebaseMessaging.getInstance().getToken()
@@ -140,12 +141,21 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
                             Log.e(LOG_TAG, "exception", task.getException());
+                            promise.reject("E_FAILED_TO_GET_TOKEN", task.getException().getMessage());
                             return;
                         }
 
-                        WritableMap params = Arguments.createMap();
-                        params.putString("deviceToken", task.getResult());
-                        fMjsDelivery.sendEvent("remoteNotificationsRegistered", params);
+                        WritableMap eventParams = Arguments.createMap();
+                        eventParams.putString("deviceToken", task.getResult());
+                        fMjsDelivery.sendEvent("remoteNotificationsRegistered", eventParams);
+
+                        promise.resolve(null);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        promise.reject("E_FAILED_TO_GET_TOKEN", e.getMessage());
                     }
                 });
     }
