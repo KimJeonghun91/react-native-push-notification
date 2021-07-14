@@ -240,7 +240,10 @@ Notifications.localNotificationSchedule = function ({ ...details }) {
   }
 
   if (details.userInfo) {
-    details.userInfo.id = details.userInfo.id || details.id;
+    details.userInfo = {
+      ...details.userInfo,
+      id: details.userInfo.id || details.id
+    };
   } else {
     details.userInfo = { id: details.id };
   }
