@@ -78,6 +78,8 @@ RCT_ENUM_CONVERTER(UIBackgroundFetchResult, (@{
     return formattedLocalNotification;
 }
 
+@end
+
 /**
  * Convert json to UNNotificationRequest
  */
