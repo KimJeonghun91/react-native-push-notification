@@ -112,10 +112,13 @@ RCT_ENUM_CONVERTER(UIBackgroundFetchResult, (@{
 
     NSDate* fireDate = [RCTConvert NSDate:details[@"fireDate"]];
     BOOL repeats = [RCTConvert BOOL:details[@"repeats"]];
-    NSDateComponents *triggerDate = fireDate ? [[NSCalendar currentCalendar]
-                                                components:NSCalendarUnitHour +
-                                                NSCalendarUnitMinute + NSCalendarUnitSecond +
-                                                NSCalendarUnitTimeZone fromDate:fireDate] : nil;
+
+    NSCalendarUnit calendarComponents = NSCalendarUnitHour + NSCalendarUnitMinute + NSCalendarUnitSecond + NSCalendarUnitTimeZone;
+    if (!repeats) {
+      calendarComponents = calendarComponents + NSCalendarUnitYear + NSCalendarUnitMonth + NSCalendarUnitDay;
+    }
+
+    NSDateComponents *triggerDate = fireDate ? [[NSCalendar currentCalendar] components: calendarComponents fromDate:fireDate] : nil;
 
     UNCalendarNotificationTrigger* trigger = triggerDate ? [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:triggerDate repeats:repeats] : nil;
 
