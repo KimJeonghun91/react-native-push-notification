@@ -4,6 +4,7 @@
   "description": "React Native Local and Remote Notifications",
   "main": "index.js",
   "scripts": {
+    "release": "release-it",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "homepage": "https://github.com/radishmedia/react-native-push-notification#README.md",
