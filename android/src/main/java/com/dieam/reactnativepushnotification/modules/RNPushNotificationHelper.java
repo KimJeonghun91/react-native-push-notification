@@ -454,7 +454,7 @@ public class RNPushNotificationHelper {
 
             int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
 
-            PendingIntent pendingActionIntent = PendingIntent.getBroadcast(context, notificationID, actionIntent, flags);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationID, intent, flags);
 
             NotificationManager notificationManager = notificationManager();
 
