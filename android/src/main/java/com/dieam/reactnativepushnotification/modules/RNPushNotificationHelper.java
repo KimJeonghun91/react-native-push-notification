@@ -625,8 +625,11 @@ public class RNPushNotificationHelper {
             }
 
             long newFireDate;
+            long currentTime = Calendar.getInstance().getTimeInMillis();
             if ("time".equals(repeatType)) {
-                newFireDate = fireDate + repeatTime;
+                do {
+                    newFireDate = fireDate + repeatTime;
+                } while (newFireDate < currentTime);
             } else {
                 int repeatField = getRepeatField(repeatType);
 
@@ -634,9 +637,10 @@ public class RNPushNotificationHelper {
                 nextEvent.setTimeInMillis(fireDate);
                 // Limits repeat time increment to int instead of long
                 int increment = repeatTime > 0 ? (int) repeatTime : 1;
-                nextEvent.add(repeatField, increment);
-
-                newFireDate = nextEvent.getTimeInMillis();
+                do {
+                    nextEvent.add(repeatField, increment);
+                    newFireDate = nextEvent.getTimeInMillis();
+                } while (newFireDate < currentTime);
             }
 
             // Sanity check, should never happen
