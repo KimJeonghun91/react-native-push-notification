@@ -627,9 +627,10 @@ public class RNPushNotificationHelper {
             long newFireDate;
             long currentTime = Calendar.getInstance().getTimeInMillis();
             if ("time".equals(repeatType)) {
-                do {
-                    newFireDate = fireDate + repeatTime;
-                } while (newFireDate < currentTime);
+                newFireDate = fireDate + repeatTime;
+                if (newFireDate < currentTime) {
+                    newFireDate = currentTime + ((currentTime - fireDate) % repeatTime);
+                }
             } else {
                 int repeatField = getRepeatField(repeatType);
 
