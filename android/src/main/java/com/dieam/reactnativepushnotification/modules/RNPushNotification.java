@@ -134,8 +134,8 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void requestPermissions(Promise promise) {
         final RNPushNotificationJsDelivery fMjsDelivery = mJsDelivery;
-
-        FirebaseMessaging.getInstance().getToken()
+        try {
+            FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
@@ -158,6 +158,9 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
                         promise.reject("E_FAILED_TO_GET_TOKEN", e.getMessage());
                     }
                 });
+        } catch (Exception e) {
+            promise.reject("E_FAILED_TO_GET_TOKEN", e.getMessage());
+        }
     }
 
     @ReactMethod
